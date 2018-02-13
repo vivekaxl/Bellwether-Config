@@ -75,7 +75,7 @@ def run(source, targets, reps, measure, perc=0.4):
 
             # for rank based measures
             if measure == 'rank':
-                test_content = target_test_content.sort_values(by=ctarget_dep)
+                test_content = target_test_content.sort(ctarget_dep)
                 test_indep = test_content[ctarget_indep]
                 test_dep = test_content[ctarget_dep]
 
