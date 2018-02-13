@@ -8,7 +8,7 @@ files = [f for f in os.listdir('.') if '.csv' in f and 'sql' in f]
 n_files = [f for f in os.listdir('.') if '.csv' in f and 'sql' not in f]
 
 for n_file in n_files:
-    os.system('cp ' + n_file + ' ' + '../data/'+n_file)
+    os.system('cp ' + n_file + ' ' + '../Data/'+n_file)
 
 t = []
 for file in files:
@@ -22,6 +22,6 @@ for file in files:
     t.append([file, max(d_c)-min(d_c)])
 
 for tt in sorted(t, key=lambda x:x[1], reverse=True)[:15]:
-    os.system('cp ' + tt[0] + ' ' + '../data/' + tt[0])
+    os.system('cp ' + tt[0] + ' ' + '../Data/' + tt[0])
 
 
