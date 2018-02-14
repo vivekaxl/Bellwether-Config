@@ -1,0 +1,11 @@
+Source,../Data/spear_0.csv,../Data/spear_1.csv,../Data/spear_2.csv,../Data/spear_3.csv,../Data/spear_4.csv,../Data/spear_5.csv,../Data/spear_6.csv,../Data/spear_7.csv,../Data/spear_8.csv,../Data/spear_9.csv
+../Data/spear_0.csv,X,0.0,3.0,4.0,4.0,4.5,2.5,2.5,2.0,14.5
+../Data/spear_1.csv,0.5,X,1.0,2.5,0.0,8.0,2.5,1.0,0.0,6.5
+../Data/spear_2.csv,2.0,3.5,X,23.0,1.5,1.0,4.0,2.0,3.0,9.0
+../Data/spear_3.csv,2.0,0.0,15.0,X,5.0,7.0,2.0,15.5,13.0,21.5
+../Data/spear_4.csv,2.0,4.0,2.0,8.5,X,6.0,4.0,4.5,2.5,11.0
+../Data/spear_5.csv,10.5,3.5,3.0,4.5,6.0,X,4.0,4.0,9.0,8.0
+../Data/spear_6.csv,2.5,0.5,12.0,8.5,4.0,7.0,X,3.5,6.0,20.5
+../Data/spear_7.csv,2.0,0.0,2.0,3.0,3.5,6.0,3.0,X,3.5,11.0
+../Data/spear_8.csv,6.0,2.5,2.0,8.5,8.0,7.5,6.5,2.0,X,16.0
+../Data/spear_9.csv,7.0,8.0,2.0,9.0,7.0,2.0,8.0,4.0,6.5,X

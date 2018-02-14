@@ -1,0 +1,7 @@
+Source,../Data/sac_4.csv,../Data/sac_5.csv,../Data/sac_6.csv,../Data/sac_7.csv,../Data/sac_8.csv,../Data/sac_9.csv
+../Data/sac_4.csv,X,32.5,10.0,53.5,27.0,6.5
+../Data/sac_5.csv,275.0,X,199.0,206.0,249.0,231.0
+../Data/sac_6.csv,71.0,71.5,X,73.5,86.5,22.5
+../Data/sac_7.csv,203.5,82.5,46.5,X,87.0,126.5
+../Data/sac_8.csv,32.5,58.5,45.5,65.0,X,71.0
+../Data/sac_9.csv,21.5,104.0,114.5,124.0,115.5,X

@@ -1,0 +1,118 @@
+from __future__ import division
+import pandas as pd
+import numpy as np
+import os
+import pickle
+import random
+from sklearn.utils import shuffle
+from sklearn.tree import DecisionTreeRegressor
+from random import seed
+
+
+def run(files, training_coeff, no_columns):
+    evals = {}
+    for file in files:
+        content = pd.read_csv(file)
+        content = shuffle(content)
+
+        # Get indexes to split to train and testing data
+        indexes = range(len(content))
+        random.shuffle(indexes)
+        train_indexes = indexes[:training_coeff*no_columns]
+
+        # Get content based on the indexes generated
+        selected_content = content.ix[train_indexes]
+
+        evals[file] = selected_content
+
+    return_dict = {}
+    for file in evals.keys():
+
+        source = evals[file]
+        return_dict[file] = {}
+
+        source_cols = source.columns.tolist()
+        csource_indep = [c for c in source_cols if '<$' not in c]
+        csource_dep = [c for c in source_cols if '<$' in c]
+        assert (len(csource_dep) == 1), "Something is wrong"
+
+        csource_dep = csource_dep[0]
+        source_indep = source[csource_indep]
+        source_dep = source[csource_dep]
+
+        model = DecisionTreeRegressor()
+        model.fit(source_indep, source_dep)
+
+        targets = [eval for eval in evals.keys() if eval!= file]
+        for target in targets:
+            target_content = evals[target]
+            target_cols = target_content.columns.tolist()
+            ctarget_indep = [c for c in target_cols if '<$' not in c]
+            ctarget_dep = [c for c in target_cols if '<$' in c]
+            assert (len(ctarget_dep) == 1), "Something is wrong"
+
+            ctarget_dep = ctarget_dep[0]
+
+            target_content = target_content.sort(ctarget_dep)
+            target_indep = target_content[ctarget_indep]
+            target_dep = target_content[ctarget_dep]
+
+            target_predict = model.predict(target_indep)
+
+            # Take care of duplicate performance values
+            l_ranks = np.searchsorted(np.sort(target_dep), target_dep).tolist()
+
+            ranks = [i[0] for i in sorted(enumerate(target_predict), key=lambda x: x[1])]
+            return_dict[file][target] = [l_ranks[ranks[0]]]
+
+
+
+    return return_dict
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    seed(10)
+    reps = 20
+    familys = ['sac', 'sqlite',  'x264', 'spear']
+    data_folder = "../Data/"
+    training_coeffs = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    columns = {
+        'sac': 57,
+        'sqlite': 14,
+        'spear': 14,
+        'x264': 16
+    }
+    collector = {}
+    for family in familys:
+        print family
+        collector[family] = {}
+        files = [data_folder + file for file in os.listdir(data_folder) if family in file]
+        for training_coeff in training_coeffs:
+            print training_coeff,
+            collector[family][training_coeff] = None
+            for _ in xrange(reps):
+                print ' . ',
+                temp_returns = run(files, training_coeff, columns[family])
+                if collector[family][training_coeff] is None:
+                    collector[family][training_coeff] = temp_returns
+                else:
+                    temp_keys = temp_returns.keys()
+                    assert(len(temp_keys) == len(collector[family][training_coeff].keys())), "Something is wrong"
+                    for temp_key in temp_keys:
+                        temp_target_keys = temp_returns[temp_key]
+                        for temp_target_key in temp_target_keys:
+                            collector[family][training_coeff][temp_key][temp_target_key].append(temp_returns[temp_key][temp_target_key][-1])
+
+            print
+
+
+    import pickle
+    pickle.dump(collector, open('./Processed/processed.p', 'w'))
+
+print "Done!"
+
