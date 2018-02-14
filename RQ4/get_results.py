@@ -9,7 +9,7 @@ pickle_file = "./Processed/processed.p"
 content = pickle.load(open(pickle_file, 'r'))
 
 familys = ['sac', 'sqlite',  'x264', 'spear']
-training_coeffs = [1, 2, 3, 4, 5]
+training_coeffs = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 for family in familys:
     myfile = open('./Results/' + family + '.csv', 'w')
