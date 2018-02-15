@@ -24,7 +24,7 @@ class __ProjectBase(object):
 class __Project(__ProjectBase):
 
     def __init__(self, name, src):
-        self.__doc__ = name
+        self.name = name
         self.set_src(src)
 
     def set_src(self, src):
@@ -35,9 +35,9 @@ class __Project(__ProjectBase):
 
     def files(self):
         raw_paths = glob(os.path.join(self.src, "*.csv"))
-        datasets = list()
+        datasets = dict()
         for path in raw_paths:
-            datasets += [pd.read_csv(path)]
+            datasets.update({os.path.basename(path): pd.read_csv(path)})
         return datasets
 
 

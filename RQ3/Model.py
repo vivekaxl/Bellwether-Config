@@ -1,7 +1,8 @@
+from pdb import set_trace
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 
-def train_prediction_model(data_source, test, T=5):
+def train_prediction_model(data_source, T=5):
     """
     Train a prediction model using Regression Tree
 
@@ -33,4 +34,4 @@ def train_transfer_model(p_src, p_tgt):
     """
 
     clf = LinearRegression()
-    return clf.fit(X=p_src, y=p_tgt)
+    return clf.fit(X=p_src.reshape(-1, 1), y=p_tgt.reshape(-1, 1))
