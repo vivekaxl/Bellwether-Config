@@ -14,7 +14,6 @@ class solution_holder:
         self.objective = objective
         self.rank = rank
 
-def find_closest():
 
 def get_data(filename, seeds):
     """
@@ -43,11 +42,13 @@ def get_data(filename, seeds):
     for id in xrange(seeds.shape[0]):
         item = seeds.iloc[id]
         indep = ','.join(map(str, map(int, item[indepcolumns].tolist())))
-        train_indexes.append(data[indep])
+        try:
+            train_indexes.append(data[indep])
+        except: pass
 
     # Sometimes when all the seeds (from BW dataset) are not found in the target dataset
     if len(train_indexes) < seeds.shape[0]:
-        print 'seeds not found: ', filename
+        print 'seeds not found: ', filename, seeds.shape[0] - len(train_indexes)
         # add random seeds
         indexes = range(pdcontent.shape[0])
         # remove all the indexes already in seed
@@ -139,10 +140,10 @@ def wrapper_run_active_learning(filename, seeds, rep, budget):
 
     print filename, initial_size, rep, budget
     training_set, testing_set= run_active_learning(filename, seeds, budget)
-    directory_name = './BWLocker/' + filename.replace('../Data/', '').replace('.csv', '').split('_')[0] + '/'
+    directory_name = './BWLocker/' + filename.replace('../../Data/', '').replace('.csv', '').split('_')[0] + '/'
     if not os.path.exists(directory_name):
         os.makedirs(directory_name)
-    pickle_file = directory_name + filename.replace('../Data/', '').replace('.csv', '') + '|' + str(rep) + '|' + str(budget) + '.p'
+    pickle_file = directory_name + filename.replace('../../Data/', '').replace('.csv', '') + '|' + str(rep) + '|' + str(budget) + '.p'
     pickle.dump([t.rank for t in training_set], open(pickle_file, 'w'))
 
 if __name__ == "__main__":
@@ -179,7 +180,7 @@ if __name__ == "__main__":
                     continue
                 else:
                     # pool.apply_async(wrapper_run_active_learning, (filename, seeds_dict[family], rep, budget))
-                    print filename, rep, budget
+                    # print filename, rep, budget
                     wrapper_run_active_learning(filename, seeds_dict[family], rep, budget)
     pool.close()
     pool.join()
