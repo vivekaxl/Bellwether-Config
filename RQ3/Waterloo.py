@@ -62,7 +62,7 @@ def main(n_reps=30):
                                             predicted=target_predicted))
 
                     results_0[source_name].update(
-                        {target_name: np.median(r_diff)})
+                        {target_name: int(np.median(r_diff))})
 
         results.update({project.name: pd.DataFrame(results_0)})
     # -------------------- DEBUG -------------------- #
