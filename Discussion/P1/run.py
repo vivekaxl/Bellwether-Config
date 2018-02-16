@@ -14,6 +14,7 @@ class solution_holder:
         self.objective = objective
         self.rank = rank
 
+def find_closest():
 
 def get_data(filename, seeds):
     """
@@ -146,7 +147,7 @@ def wrapper_run_active_learning(filename, seeds, rep, budget):
 
 if __name__ == "__main__":
     bellwethers = {
-        'sac': 'sac_4',
+        'sac': 'sac_5',
         'spear': 'spear_7',
         'x264': 'x264_9',
         'sqlite': 'sqlite_19'
@@ -177,9 +178,9 @@ if __name__ == "__main__":
                     # if bellwether then exit
                     continue
                 else:
-                    pool.apply_async(wrapper_run_active_learning, (filename, seeds_dict[family], rep, budget))
+                    # pool.apply_async(wrapper_run_active_learning, (filename, seeds_dict[family], rep, budget))
                     print filename, rep, budget
-                    # wrapper_run_active_learning(filename, seeds_dict[family], rep, budget)
+                    wrapper_run_active_learning(filename, seeds_dict[family], rep, budget)
     pool.close()
     pool.join()
 
