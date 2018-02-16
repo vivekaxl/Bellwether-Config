@@ -95,6 +95,7 @@ if __name__ == "__main__":
                 targets = [f for f in files if file!=f]
                 assert(len(targets) + 1 == len(files)), "Something is wrong"
                 run(source, targets, reps, measure)
+            print
                 # pool.apply_async(run, (source, targets, reps, measure))
     pool.close()
     pool.join()
