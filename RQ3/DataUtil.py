@@ -37,7 +37,7 @@ class __Project(__ProjectBase):
         raw_paths = glob(os.path.join(self.src, "*.csv"))
         datasets = dict()
         for path in raw_paths:
-            datasets.update({os.path.basename(path): pd.read_csv(path)})
+            datasets.update({os.path.basename(path).rstrip(".csv"): pd.read_csv(path)})
         return datasets
 
 

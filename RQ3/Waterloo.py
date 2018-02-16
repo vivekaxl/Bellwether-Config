@@ -9,7 +9,7 @@ from DataUtil import get_all_projects
 from Model import train_prediction_model, train_transfer_model
 
 
-def main():
+def main(n_reps=30):
     data_path = os.path.realpath("./data")
     projects = get_all_projects(data_path)
     results = dict()
@@ -21,7 +21,7 @@ def main():
             for target_name, target_conf in files.iteritems():
                 if not source_name == target_name:
                     r_diff = []
-                    for _ in xrange(30):
+                    for _ in xrange(n_reps):
                         "Construct a prediction model using source"
                         predict_model = train_prediction_model(
                             source_conf, T=5)
@@ -58,11 +58,11 @@ def main():
                             predicted_raw).reshape(1, -1)[0]
 
                         "Get rank difference"
-                        r_diff += rank_diff(actual=target_actual,
-                                            predicted=target_predicted)
+                        r_diff.append(rank_diff(actual=target_actual,
+                                            predicted=target_predicted))
 
                     results_0[source_name].update(
-                        {target_name: np.median(r_diff)})
+                        {target_name: int(np.median(r_diff))})
 
         results.update({project.name: pd.DataFrame(results_0)})
     # -------------------- DEBUG -------------------- #
@@ -70,4 +70,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(n_reps=31)
