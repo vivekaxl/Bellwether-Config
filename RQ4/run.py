@@ -9,7 +9,7 @@ from sklearn.tree import DecisionTreeRegressor
 from random import seed
 
 
-def run(files, training_coeff, no_columns):
+def run(files, no_rows, no_columns):
     evals = {}
     for file in files:
         content = pd.read_csv(file)
@@ -18,7 +18,7 @@ def run(files, training_coeff, no_columns):
         # Get indexes to split to train and testing data
         indexes = range(len(content))
         random.shuffle(indexes)
-        train_indexes = indexes[:training_coeff*no_columns]
+        train_indexes = indexes[:no_rows]
 
         # Get content based on the indexes generated
         selected_content = content.ix[train_indexes]
@@ -78,41 +78,49 @@ def run(files, training_coeff, no_columns):
 if __name__ == "__main__":
     seed(10)
     reps = 20
-    familys = ['sac', 'sqlite',  'x264', 'spear']
+    familys = ['sqlite',]# 'sac',  'x264', 'spear']
     data_folder = "../Data/"
-    training_coeffs = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    training_percents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     columns = {
         'sac': 57,
         'sqlite': 14,
         'spear': 14,
         'x264': 16
     }
+
+    rows = {
+        'sac': 845,
+        'sqlite': 1000,
+        'spear': 16834,
+        'x264': 2047
+    }
+
     collector = {}
     for family in familys:
         print family
         collector[family] = {}
         files = [data_folder + file for file in os.listdir(data_folder) if family in file]
-        for training_coeff in training_coeffs:
-            print training_coeff,
-            collector[family][training_coeff] = None
+        for training_percent in training_percents:
+            print training_percent,
+            collector[family][training_percent] = None
             for _ in xrange(reps):
                 print ' . ',
-                temp_returns = run(files, training_coeff, columns[family])
-                if collector[family][training_coeff] is None:
-                    collector[family][training_coeff] = temp_returns
+                temp_returns = run(files, int(training_percent*rows[family]/100), columns[family])
+                if collector[family][training_percent] is None:
+                    collector[family][training_percent] = temp_returns
                 else:
                     temp_keys = temp_returns.keys()
-                    assert(len(temp_keys) == len(collector[family][training_coeff].keys())), "Something is wrong"
+                    assert(len(temp_keys) == len(collector[family][training_percent].keys())), "Something is wrong"
                     for temp_key in temp_keys:
                         temp_target_keys = temp_returns[temp_key]
                         for temp_target_key in temp_target_keys:
-                            collector[family][training_coeff][temp_key][temp_target_key].append(temp_returns[temp_key][temp_target_key][-1])
+                            collector[family][training_percent][temp_key][temp_target_key].append(temp_returns[temp_key][temp_target_key][-1])
 
             print
 
 
     import pickle
-    pickle.dump(collector, open('./Processed/processed.p', 'w'))
+    pickle.dump(collector, open('./Processed/processed_4.p', 'w'))
 
 print "Done!"
 
