@@ -9,6 +9,7 @@ files = [pickle_folder+file for file in os.listdir(pickle_folder) if '.p' in fil
 result_folder = './Results/'
 consolidated = {}
 for file in files:
+    print file
     system_name = file.split('/')[-1].split('.p')[0]
     dd = pickle.load(open(file))
     assert(len(dd.keys()) == 1), "Something is wrong"
@@ -24,6 +25,7 @@ for file in files:
         t = [target]
         aux = []
         for perc in percs:
+            print perc
             bw = ['bw'] + dd[source][target][perc]['bellwether']
             tar = ['target'] + dd[source][target][perc]['target']
             ret = rdivDemo('a', [bw, tar], globalMinMax=False, isLatex=False)
@@ -42,6 +44,7 @@ for file in files:
                 aux.append('same')
             else:
                 aux.append('worse')
+
         writer.writerow(t+aux)
     myFile.close()
 print 'Done!'

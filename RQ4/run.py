@@ -43,7 +43,7 @@ def run(files, no_rows, no_columns):
         model = DecisionTreeRegressor()
         model.fit(source_indep, source_dep)
 
-        targets = [eval for eval in evals.keys() if eval!= file]
+        targets = [eval for eval in evals.keys() if eval != file]
         for target in targets:
             target_content = evals[target]
             target_cols = target_content.columns.tolist()
@@ -78,21 +78,26 @@ def run(files, no_rows, no_columns):
 if __name__ == "__main__":
     seed(10)
     reps = 20
-    familys = ['sqlite',]# 'sac',  'x264', 'spear']
+    familys = [ 'spear', 'sac',  'x264', 'storm-obj1', 'storm-obj2', #'sqlite',
+               ]
     data_folder = "../Data/"
-    training_percents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    training_percents = [1, 2, 3, 4, 5, 6,]# 7, 8, 9, 10, ]#11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     columns = {
         'sac': 57,
         'sqlite': 14,
         'spear': 14,
-        'x264': 16
+        'x264': 16,
+        'storm-obj1': 12,
+        'storm-obj2': 12,
     }
 
     rows = {
         'sac': 845,
         'sqlite': 1000,
         'spear': 16834,
-        'x264': 2047
+        'x264': 2047,
+        'storm-obj1': 536,
+        'storm-obj2': 536,
     }
 
     collector = {}
@@ -100,6 +105,8 @@ if __name__ == "__main__":
         print family
         collector[family] = {}
         files = [data_folder + file for file in os.listdir(data_folder) if family in file]
+        files = [f for f in files  if  os.path.isfile(f)]
+        print files
         for training_percent in training_percents:
             print training_percent,
             collector[family][training_percent] = None
@@ -120,7 +127,7 @@ if __name__ == "__main__":
 
 
     import pickle
-    pickle.dump(collector, open('./Processed/processed_4.p', 'w'))
+    pickle.dump(collector, open('./Processed/processed.p', 'w'))
 
 print "Done!"
 

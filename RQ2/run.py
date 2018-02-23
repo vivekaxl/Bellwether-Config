@@ -121,15 +121,18 @@ def run(source, targets, reps, measure, perc=0.4):
 if __name__ == "__main__":
     seed(10)
     reps = 20
-    familys = [ 'sac', 'sqlite',  'x264', 'spear',  ]
+    familys = [ 'storm-obj1', 'storm-obj2', #'sqlite', 'spear', 'sac',  'x264',
+                ]
     measures = ['rank']#, 'mmre', 'abs_res']
-    percs = [.05, .10, .15, .20, .25, .30, .35, .40]
+    percs = [.20,]#[.05, .10, .15, .20, .25, .30, .35, .40]
     data_folder = "../Data/"
     bellwethers = {
         'sac': 'sac_4',
         'sqlite': 'sqlite_88',
         'spear': 'spear_7',
-        'x264': 'x264_9'
+        'x264': 'x264_9',
+        'storm-obj1': 'storm-obj1_feature6',
+        'storm-obj2': 'storm-obj2_feature7'
     }
     import multiprocessing as mp
     # Main control loop
@@ -141,7 +144,7 @@ if __name__ == "__main__":
                     source = data_folder + bellwethers[family] + '.csv'
                     targets = [f for f in files if f!=source]
                     assert(len(targets) + 1 == len(files)), "Something is wrong"
-                    # run(source, targets, reps, measure, perc)
-                    pool.apply_async(run, (source, targets, reps, measure, perc))
+                    run(source, targets, reps, measure, perc)
+                    # pool.apply_async(run, (source, targets, reps, measure, perc))
     pool.close()
     pool.join()

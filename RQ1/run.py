@@ -80,8 +80,9 @@ def run(source, targets, reps, measure):
 
 if __name__ == "__main__":
     seed(10)
-    reps = 20
-    familys = [ 'sqlite', 'spear', 'sac',  'x264', ]
+    reps = 30
+    familys = [ 'storm-obj1', 'storm-obj2', 'spear', 'sac',  'x264', 'sqlite',
+                ]
     measures = ['rank', 'mmre', 'abs_res']
     data_folder = "../Data/"
     import multiprocessing as mp
@@ -94,8 +95,8 @@ if __name__ == "__main__":
                 source = file
                 targets = [f for f in files if file!=f]
                 assert(len(targets) + 1 == len(files)), "Something is wrong"
-                run(source, targets, reps, measure)
+                # run(source, targets, reps, measure)
+                pool.apply_async(run, (source, targets, reps, measure))
             print
-                # pool.apply_async(run, (source, targets, reps, measure))
     pool.close()
     pool.join()

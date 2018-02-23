@@ -16,6 +16,7 @@ for file in files:
         sources = d.keys()
         heading =  ['Target '] + sorted(sources)
         writer.writerow(heading)
+        ret = []
         for source in sorted(sources):
             t = [source]
             for target in sorted(sources):
@@ -24,6 +25,9 @@ for file in files:
                 except:
                     t.append('X')
             writer.writerow(t)
-
+            # removing X
+            t.remove('X')
+            ret.append([source, np.median(t[1:])])
+        print [x[0] for x in sorted(ret, key=lambda x:x[1])][:3]
         myFile.close()
 print 'Done!'

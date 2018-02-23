@@ -1,7 +1,7 @@
 import pickle
 import os
 
-folders = [  'PickleLocker_sqlite/', 'PickleLocker_x264/', 'PickleLocker_spear/', 'PickleLocker_sac/',]
+folders = [  'PickleLocker_sqlite/', 'PickleLocker_x264/', 'PickleLocker_spear/', 'PickleLocker_sac/','./PickleLocker_storm-obj1/', './PickleLocker_storm-obj2/']
 
 
 for folder in folders:
