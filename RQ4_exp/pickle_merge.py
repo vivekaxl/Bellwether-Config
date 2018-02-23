@@ -4,7 +4,7 @@ import numpy as np
 import csv
 
 pickle_folder = "./Pickle_Folder/"
-myfile = open('./Results/overall.csv', 'w')
+myfile = open('./Results/overall_normalized.csv', 'w')
 writer = csv.writer(myfile)
 
 ret = {}
@@ -20,17 +20,28 @@ for file in files:
         content_family = content[family]
         ret[t_file][family] = np.median([np.median(c[1]) for c in content_family])
 
+rows = {
+    'sac': 4000,
+    'sqlite': 1000,
+    'spear': 16834,
+    'x264': 2047,
+    'storm-obj1': 2049,
+    'storm-obj2': 2049,
+}
+
 familys = ['x264', 'storm-obj2', 'storm-obj1', 'sac', 'spear']
-heading = ['Parameters'] + familys
+heading = ['step_size', 'percentage', 'loss'] + familys + ['N-'+family for family in familys]
 writer.writerow(heading)
 parameters = ret.keys()
 
 total_csv = []
 for parameter in sorted(parameters):
-    t = []
+    t = parameter.split('_')
+    tt = []
     for family in familys:
         t.append(ret[parameter][family])
-    writer.writerow(t)
+        tt.append(ret[parameter][family] * 100/rows[family])
+    writer.writerow(t + tt)
 
 myfile.close()
 print 'Done!'
