@@ -79,4 +79,3 @@ for measure in measures:
         draw(pickle_file, measure)
 
 
-
