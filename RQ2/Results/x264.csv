@@ -1,0 +1,21 @@
+Target Files,5,10,15,20,25,30,35,40,s5,s10,s15,s20,s25,s30,s35,s40
+x264_17,7.5,41.5,51.5,60.5,41.0,134.5,43.0,270.0,better,better,better,better,better,better,better,better
+x264_16,-62.5,-63.0,-50.5,72.5,19.5,96.5,169.5,-42.0,same,same,same,same,same,same,same,same
+x264_15,5.5,7.5,19.5,24.5,6.0,7.0,16.0,54.5,same,same,same,better,same,same,better,same
+x264_14,0.0,1.0,0.5,2.0,0.0,1.5,0.0,0.0,same,same,same,same,same,same,same,same
+x264_13,2.0,-0.5,0.0,-0.5,-1.5,7.0,5.0,3.5,better,same,same,same,same,better,same,better
+x264_12,1.0,7.5,17.5,26.5,21.5,32.0,36.5,30.0,same,same,same,better,better,same,better,better
+x264_11,1.0,1.0,1.5,1.0,1.0,1.0,1.0,1.0,better,better,better,better,better,same,same,same
+x264_10,0.0,0.5,2.5,1.0,0.5,1.0,0.0,1.0,same,better,better,same,better,same,same,better
+x264_20,-215.5,-177.5,-181.5,-152.0,-140.5,-99.0,-34.5,-131.0,worse,worse,worse,worse,same,same,same,worse
+x264_18,1.5,1.0,1.0,1.0,0.0,1.0,1.0,1.0,better,same,better,same,same,same,better,same
+x264_7,1.0,3.0,0.5,1.5,0.5,1.0,2.0,1.0,better,better,better,better,same,better,better,better
+x264_6,3.0,2.0,1.0,1.0,2.5,1.0,2.5,1.0,better,better,better,better,better,same,better,better
+x264_5,0.0,0.0,0.0,0.0,-1.0,-1.0,0.0,-0.5,same,same,same,same,same,same,same,same
+x264_4,-4.0,-3.0,-3.0,-4.0,-3.5,-4.0,-3.5,-3.0,same,same,worse,worse,worse,worse,worse,worse
+x264_3,1.5,-1.5,-1.0,-1.0,-1.0,-2.0,-1.5,-2.0,same,same,same,same,same,same,same,same
+x264_19,24.0,57.0,239.5,220.5,216.0,198.0,180.0,248.0,better,better,better,same,better,same,same,better
+x264_1,0.5,2.0,0.5,2.0,1.5,2.0,2.0,2.0,better,same,same,same,same,same,same,same
+x264_0,0.0,1.5,1.0,0.0,0.0,0.0,-1.0,-2.0,same,better,same,same,same,same,worse,same
+x264_8,1.5,2.0,3.0,1.5,2.0,3.0,1.5,1.0,better,better,better,better,same,better,same,same
+x264_2,0.0,2.0,0.0,1.0,0.0,0.0,0.0,0.0,same,better,same,same,same,same,same,same

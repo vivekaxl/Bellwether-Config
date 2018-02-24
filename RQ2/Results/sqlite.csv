@@ -1,0 +1,15 @@
+Target Files,5,10,15,20,25,30,35,40,s5,s10,s15,s20,s25,s30,s35,s40
+sqlite_32,-837.5,-791.0,-750.0,-676.5,-615.5,-554.0,-500.0,-459.5,worse,worse,worse,worse,worse,worse,worse,worse
+sqlite_96,-27.5,-1.0,69.0,28.5,135.5,124.0,169.5,62.5,same,same,same,same,same,same,better,same
+sqlite_87,-88.0,-47.5,-35.0,55.0,65.5,79.0,41.5,83.5,worse,same,same,better,better,better,better,better
+sqlite_71,-633.5,-577.0,-550.0,-500.5,-437.5,-422.5,-403.0,-378.5,worse,worse,worse,worse,worse,worse,worse,worse
+sqlite_60,-256.5,-235.0,-187.5,-172.0,-162.0,-164.0,-135.5,-132.0,worse,worse,worse,worse,worse,worse,worse,same
+sqlite_74,-389.5,-362.5,-310.0,-276.0,-268.0,-242.5,-195.0,-174.0,worse,worse,worse,worse,worse,worse,worse,worse
+sqlite_91,16.5,41.5,51.5,113.5,140.0,96.5,112.5,106.0,better,better,better,better,better,better,better,better
+sqlite_90,3.5,24.5,39.5,74.5,69.0,72.0,216.0,63.5,same,better,better,better,better,better,better,better
+sqlite_57,-223.0,-190.5,-174.5,-154.0,-131.0,-81.0,-92.5,-81.5,worse,worse,same,same,worse,same,same,same
+sqlite_81,-608.5,-575.5,-530.0,-474.0,-451.0,-423.5,-317.0,-339.0,worse,worse,worse,worse,worse,worse,worse,worse
+sqlite_95,-1.0,62.0,53.5,98.0,40.0,133.5,82.5,114.5,same,better,better,better,better,better,better,better
+sqlite_94,-300.5,-236.5,-212.0,-192.0,-186.5,43.0,-143.0,-121.0,worse,worse,worse,worse,worse,same,same,same
+sqlite_97,-403.0,-315.0,-287.0,-297.5,-203.5,-269.0,-164.0,-165.0,worse,worse,worse,worse,same,worse,same,worse
+sqlite_85,39.5,82.5,41.0,97.0,149.0,196.0,168.5,152.0,better,better,better,better,better,better,better,better
