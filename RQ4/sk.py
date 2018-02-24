@@ -453,7 +453,7 @@ For examples on using this code, see _rdivDemo_ (below).
 """
 
 
-def scottknott(data, cohen=0.35, small=3, useA12=False, epsilon=0.001):
+def scottknott(data, cohen=0.35, small=3, useA12=False, epsilon=1):
   """Recursively split data, maximizing delta of
   the expected value of the mean before and
   after the splits.
