@@ -40,9 +40,13 @@ def draw(pickle_file, measure):
     fig, ax = plt.subplots()
     # Using matshow here just because it sets the ticks up nicely. imshow is faster.
     imgplot = ax.matshow(heatmap_arr, cmap='Greys', vmax=max_num)
+    ax.set_xticks(np.arange(-.5, len(sources), 1), minor=True);
+    ax.set_yticks(np.arange(-.5, len(sources), 1), minor=True);
+
+    ax.grid(which='minor',color='w', linestyle='-', linewidth=6)
 
     for i in xrange(len(heatmap_arr)):
-        ax.add_patch(mpl.patches.Rectangle((i - .5, i - .5), 1, 1, hatch='X', fill=False, snap=False, color='white'))
+        ax.add_patch(mpl.patches.Rectangle((i - .5, i - .5), 1, 1, hatch='+/', fill=False, snap=False, color='red', linewidth=8))
 
     # for (i, j), z in np.ndenumerate(heatmap_arr):
     #     if z == 4000:
