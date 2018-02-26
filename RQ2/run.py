@@ -120,9 +120,9 @@ def run(source, targets, reps, measure, perc=0.4):
 
 if __name__ == "__main__":
     seed(10)
-    reps = 20
+    reps = 40
     familys = [ 'sac',
-        'sqlite', 'spear', 'x264','storm-obj1', 'storm-obj2',
+         'sqlite', 'spear', 'x264','storm-obj1', 'storm-obj2',
                 ]
     measures = ['rank']#, 'mmre', 'abs_res']
     percs = [.05, .10, .15, .20, .25, .30, .35, .40]

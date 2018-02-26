@@ -6,7 +6,7 @@ from sk import rdivDemo
 
 pickle_folder = './Processed/'
 files = [pickle_folder+file for file in os.listdir(pickle_folder) if '.p' in file]
-files = ['./Processed/storm-obj2.p']
+# files = ['./Processed/storm-obj2.p']
 result_folder = './Results/'
 consolidated = {}
 for file in files:
