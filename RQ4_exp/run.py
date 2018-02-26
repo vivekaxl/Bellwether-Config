@@ -162,7 +162,7 @@ def run_main(step_size, percentage, loss):
 
     # seed(10)
     reps = 20
-    familys = ['storm-obj1', 'storm-obj2','x264','spear', 'sac',    # 'sqlite',
+    familys = ['storm-obj1', 'storm-obj2','x264','spear', 'sac',
                ]
     data_folder = "../Data/"
     columns = {

@@ -84,11 +84,11 @@ def run(source, targets, reps, measure, perc=0.4):
                 l_ranks = np.searchsorted(np.sort(test_dep), test_dep).tolist()
 
                 ranks = [i[0] for i in sorted(enumerate(source_test_predict_dep), key=lambda x: x[1])]
-                data_family[source][target][perc][measure]['bellwether'].append(l_ranks[ranks[0]])
+                data_family[source][target][perc][measure]['bellwether'].append(abs(test_dep.iloc[0] - test_dep.iloc[ranks[0]])*100)
 
                 target_test_predict_dep = target_model.predict(test_indep)
                 ranks = [i[0] for i in sorted(enumerate(target_test_predict_dep), key=lambda x: x[1])]
-                data_family[source][target][perc][measure]['target'].append(ranks[0])
+                data_family[source][target][perc][measure]['target'].append(abs(test_dep.iloc[0] - test_dep.iloc[ranks[0]])*100)
 
             elif measure == 'mmre':
                 test_indep = target_test_content[ctarget_indep]
@@ -121,18 +121,19 @@ def run(source, targets, reps, measure, perc=0.4):
 if __name__ == "__main__":
     seed(10)
     reps = 20
-    familys = [ 'storm-obj1', 'storm-obj2', #'sqlite', 'spear', 'sac',  'x264',
+    familys = [ 'sac',
+        'sqlite', 'spear', 'x264','storm-obj1', 'storm-obj2',
                 ]
     measures = ['rank']#, 'mmre', 'abs_res']
-    percs = [.20,]#[.05, .10, .15, .20, .25, .30, .35, .40]
+    percs = [.05, .10, .15, .20, .25, .30, .35, .40]
     data_folder = "../Data/"
     bellwethers = {
         'sac': 'sac_4',
-        'sqlite': 'sqlite_88',
+        'sqlite': 'sqlite_73',
         'spear': 'spear_7',
         'x264': 'x264_9',
-        'storm-obj1': 'storm-obj1_feature6',
-        'storm-obj2': 'storm-obj2_feature7'
+        'storm-obj1': 'storm-obj1_feature8',
+        'storm-obj2': 'storm-obj2_feature9'
     }
     import multiprocessing as mp
     # Main control loop
@@ -143,8 +144,10 @@ if __name__ == "__main__":
             for perc in percs:
                     source = data_folder + bellwethers[family] + '.csv'
                     targets = [f for f in files if f!=source]
+                    print source
+                    print targets
                     assert(len(targets) + 1 == len(files)), "Something is wrong"
-                    run(source, targets, reps, measure, perc)
-                    # pool.apply_async(run, (source, targets, reps, measure, perc))
+                    # run(source, targets, reps, measure, perc)
+                    pool.apply_async(run, (source, targets, reps, measure, perc))
     pool.close()
     pool.join()

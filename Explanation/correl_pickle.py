@@ -31,7 +31,6 @@ for file in files:
         deps[tasks[t]] = []
 
     for i,key in enumerate(common.keys()):
-        tasks = common[key].keys()
         for task in tasks:
             deps[task].append(common[key][task])
 

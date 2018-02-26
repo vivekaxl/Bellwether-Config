@@ -1,6 +1,6 @@
-../Data/sac_4.csv,-1,1,1,1,2,1
-../Data/sac_5.csv,1,-1,2,2,1,1
-../Data/sac_6.csv,1,2,-1,2,1,1
-../Data/sac_7.csv,1,2,2,-1,1,1
-../Data/sac_8.csv,2,1,1,1,-1,1
-../Data/sac_9.csv,1,1,1,1,1,-1
+../Data/sac_4.csv,-1,0,0,0,1,0
+../Data/sac_5.csv,0,-1,1,1,0,0
+../Data/sac_6.csv,0,1,-1,1,0,0
+../Data/sac_7.csv,0,1,1,-1,0,0
+../Data/sac_8.csv,1,0,0,0,-1,0
+../Data/sac_9.csv,0,0,0,0,0,-1

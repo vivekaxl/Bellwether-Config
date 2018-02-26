@@ -7,7 +7,7 @@ data_folder = "../Data/"
 
 familys = [ 'spear', 'sac',  'x264', 'storm-obj1', 'storm-obj2', 'sqlite',]
 perc = 0.01
-threshold = 2
+threshold = 4
 
 collector = {}
 

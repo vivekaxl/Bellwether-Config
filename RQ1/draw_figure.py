@@ -48,12 +48,12 @@ def draw(pickle_file, measure):
     for i in xrange(len(heatmap_arr)):
         ax.add_patch(mpl.patches.Rectangle((i - .5, i - .5), 1, 1, hatch='+/', fill=False, snap=False, color='red', linewidth=8))
 
-    # for (i, j), z in np.ndenumerate(heatmap_arr):
-    #     if z == 4000:
-    #         # ax.text(j, i, 'X', ha='center', va='center', color='black')
-    #         pass
-    #     else:
-    #         ax.text(j, i, '{:0.0f}'.format(z), ha='center', va='center', color='white')
+    for (i, j), z in np.ndenumerate(heatmap_arr):
+        if z == 4000:
+            # ax.text(j, i, 'X', ha='center', va='center', color='black')
+            pass
+        else:
+            ax.text(j, i, round(z, 3), ha='center', va='center', color='black', fontsize=28)
 
     cb = plt.colorbar(imgplot, shrink=0.7)
     cb.ax.set_yticklabels(cb.ax.get_yticklabels(), fontsize=44)
@@ -64,7 +64,7 @@ def draw(pickle_file, measure):
     plt.ylabel('Source', fontsize=44)
     plt.xlabel('Target', fontsize=44)
     fig.set_size_inches(40, 40)
-    plt.savefig('./Figures/' + name + '_' + measure + '.png', dpi=150)
+    plt.savefig('./Figures/normalized-' + name + '_' + measure + '.png', dpi=150)
 
 
 pickle_folder = './Processed/'
@@ -77,7 +77,7 @@ pickle_files = [
     './Processed/storm-obj2.p'
 ]
 
-measures = ['rank', 'mmre', 'abs_res']
+measures = ['rank']#, 'mmre', 'abs_res']
 for measure in measures:
     for pickle_file in pickle_files:
         draw(pickle_file, measure)

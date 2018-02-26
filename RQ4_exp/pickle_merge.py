@@ -29,7 +29,7 @@ rows = {
     'storm-obj2': 2049,
 }
 
-familys = ['x264', 'storm-obj2', 'storm-obj1', 'sac', 'spear']
+familys = ['x264', 'storm-obj2', 'storm-obj1', 'sac', 'spear', 'sqlite']
 heading = ['step_size', 'percentage', 'loss'] + familys + ['N-'+family for family in familys]
 writer.writerow(heading)
 parameters = ret.keys()
