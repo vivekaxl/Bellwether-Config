@@ -1,6 +1,10 @@
+import scipy as sp
+import numpy as np
 from pdb import set_trace
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
+from sklearn.gaussian_process import GaussianProcessRegressor
+from kernel import SEAMS_Kernel
 
 def train_prediction_model(data_source, T=5):
     """
@@ -35,3 +39,13 @@ def train_transfer_model(p_src, p_tgt):
 
     clf = LinearRegression()
     return clf.fit(X=p_src.reshape(-1, 1), y=p_tgt.reshape(-1, 1))
+
+
+def train_gaussproc_model(src_config, tgt_config):
+    src_indep_vars = src_config[src_config.columns[:-1]]
+    src_depend_var = src_config[src_config.columns[-1]]
+    tgt_depend_var = tgt_config[tgt_config.columns[-1]]
+    corr = np.correlate(src_depend_var, tgt_depend_var)
+    # kernel = SEAMS_Kernel(corr) 
+    clf = GaussianProcessRegressor()
+    return clf.fit(X=src_indep_vars, y=src_depend_var)
