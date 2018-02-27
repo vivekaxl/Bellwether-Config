@@ -9,8 +9,8 @@ pickle_file = "./Processed/processed.p"
 content = pickle.load(open(pickle_file, 'r'))
 
 training_coeffs = [1, 2, 3, 4, 5, 6,]# 7, 8, 9, 10, ]#11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-familys = [ 'spear', 'sac',  'x264', 'storm-obj1', 'storm-obj2', #'sqlite',
-               ]
+familys = [ 'spear', 'sac',  'x264', 'storm-obj1', 'storm-obj2', 'sqlite']
+
 rows = {
         'sac': 845,
         'sqlite': 1000,
@@ -26,16 +26,16 @@ for family in familys:
     files = sorted(content[family][1].keys())
     heading = ['Source'] + map(str, [int(t*rows[family]*0.01) for t in training_coeffs])
     writer.writerow(heading)
-    for source in files:
-        tt = [source]
-        for training_coeff in training_coeffs:
-            t =  []
+    for training_coeff in training_coeffs:
+        tt = []
+        for source in files:
+            t =  [source]
             for f in files:
-                if f == source: pass
-                else:
-                    t.append(np.median(content[family][training_coeff][source][f]))
-            tt.append(np.median(t))
-        writer.writerow(tt)
+                if not f == source:
+                    t.extend(content[family][training_coeff][source][f])
+            tt.append(t)
+        
+        
     myfile.close()
 
 print 'Done!'
