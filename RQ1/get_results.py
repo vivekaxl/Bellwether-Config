@@ -27,6 +27,7 @@ for file in files:
             writer.writerow(t)
             # removing X
             t.remove('X')
+            print t
             ret.append([source, np.median(t[1:])])
         myFile.close()
 print 'Done!'

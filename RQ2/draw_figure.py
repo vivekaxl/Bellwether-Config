@@ -84,12 +84,16 @@ for file in files:
     tlistoflist = []
     for ll in listoflist:
         t = [ll[0]]
+        print ll
         for l in ll[1:]:
             if l == 'better': t.append(1)
             elif l == 'same': t.append(0.5)
             elif l == 'worse': t.append(0)
             else:
+                print ">", l
                 print "Error"
+                import pdb
+                pdb.set_trace()
                 exit()
         assert(len(t) == len(ll)), "Something is wrong"
         assert(len(t)-1 == len(labels)), "Something is wrong"
