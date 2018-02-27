@@ -47,12 +47,15 @@ for family in familys:
                     t.extend(content[family][training_coeff][source][f])
             tt.append(t)
         ranks = sk_ranks(tt)
+
         ranks = sorted(ranks, key=lambda x: x.rank)
         best_rank = Misc.uniques([x.rank for x in ranks])[0] 
         worst_rank = Misc.uniques([x.rank for x in ranks])[-1]
         best_dataset = [data.name for data in ranks if data.rank == best_rank]
         worst_dataset = [data.name for data in ranks if data.rank == worst_rank]
         the_remaining = [data.name for data in ranks]
+        
+        set_trace()
         
         "Compare the Transferring from the best/worst datasets on the rest"
         comp = []
