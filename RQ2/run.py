@@ -122,7 +122,7 @@ if __name__ == "__main__":
     seed(10)
     reps = 40
     familys = [
-         'sqlite', #'spear', 'x264','storm-obj1', 'storm-obj2','sac',
+         'sac',#'sqlite', #'spear', 'x264','storm-obj1', 'storm-obj2','sac',
                 ]
     measures = ['rank']#, 'mmre', 'abs_res']
     percs = [ .15, .20, .05, .10, .25, .30, .35, .40]
