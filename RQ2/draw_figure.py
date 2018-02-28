@@ -29,15 +29,19 @@ def draw(heatmap_arr, xlabel, name):
 
     fig, ax = plt.subplots()
     # discrete color scheme
-    cMap = ListedColormap(['#fdc086', '#beaed4', '#7fc97f'])
-    heatmap = ax.pcolor(np.array(tt), cmap=cMap, edgecolors='white', linewidths=6)
+    # cMap = ListedColormap([ '#beaed4', '#fdc086','#7fc97f'])
+    heatmap = ax.pcolor(np.array(tt), edgecolors='white', linewidths=6, vmin=0, vmax=1)
 
     # legend
     cbar = plt.colorbar(heatmap)
-
-    cbar.ax.get_yaxis().set_ticks([])
-    for j, lab in enumerate(['Worse', 'Same', 'Better']):
-        cbar.ax.text(.5, (2 * j + 1) / 6.0, lab, ha='center', va='center', fontsize=44, color='black')
+    # Manually specify colorbar labelling after it's been generated
+    cbar.ax.tick_params(labelsize=44)
+    cbar.set_ticks([1, 0.5, 0])
+    cbar.set_ticklabels(['Better', 'Same', 'Worse'])
+    #
+    # cbar.ax.get_yaxis().set_ticks([])
+    # for j, lab in enumerate([ 'Same', 'Worse', 'Better',]):
+    #     cbar.ax.text(.5, (2 * j + 1) / 6.0, lab, ha='center', va='center', fontsize=44, color='black')
 
     # box = ax.get_position()
     # ax.set_position([box.x0, box.y0, box.width * 0.7, box.height])
@@ -66,6 +70,8 @@ def draw(heatmap_arr, xlabel, name):
 
 folder = './Results/'
 files = [folder+f for f in os.listdir(folder)]
+# files = ['./Results/storm-obj2.csv']
+
 for file in files:
     name = file.split('/')[-1].replace('.csv', '')
     content = pd.read_csv(file)
@@ -78,12 +84,16 @@ for file in files:
     tlistoflist = []
     for ll in listoflist:
         t = [ll[0]]
+        print ll
         for l in ll[1:]:
             if l == 'better': t.append(1)
             elif l == 'same': t.append(0.5)
             elif l == 'worse': t.append(0)
             else:
+                print ">", l
                 print "Error"
+                import pdb
+                pdb.set_trace()
                 exit()
         assert(len(t) == len(ll)), "Something is wrong"
         assert(len(t)-1 == len(labels)), "Something is wrong"

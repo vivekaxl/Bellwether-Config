@@ -28,6 +28,7 @@ def run(files, no_rows, no_columns, percentage, loss):
     loosy=loss
     gen = 1
     while True:
+        # print sorted(local_files)
         result_collector[gen] = {}
         for file in local_files:
             # Get all indexes
@@ -81,9 +82,9 @@ def run(files, no_rows, no_columns, percentage, loss):
                 l_ranks = np.searchsorted(np.sort(target_dep), target_dep).tolist()
                 ranks = [i[0] for i in sorted(enumerate(target_predict), key=lambda x: x[1])]
 
-                result_collector[gen][file].append(l_ranks[ranks[0]])
+                result_collector[gen][file].append(abs(target_dep.iloc[0] - target_dep.iloc[ranks[0]])*100)
 
-        if gen > 0:
+        if gen > 3:
             # eliminate files which are not possible bellwether
             temp = result_collector[gen]
             temp_split = [np.median(temp[key]) for key in temp.keys()]
@@ -114,7 +115,7 @@ def get_rd(family, detected_bws):
     for detected_bw in detected_bws:
         rd_collector = []
         for target in files:
-            if detected_bw == file: continue
+            if detected_bw == target: continue
             train_content = pd.read_csv(detected_bw)
             train_cols = train_content.columns.values.tolist()
             ctrain_indep = [c for c in train_cols if '<$' not in c]
@@ -145,7 +146,7 @@ def get_rd(family, detected_bws):
             target_test_predict_dep = source_model.predict(test_indep)
 
             ranks = [i[0] for i in sorted(enumerate(target_test_predict_dep), key=lambda x: x[1])]
-            rd_collector.append(l_ranks[ranks[0]])
+            rd_collector.append(abs(test_dep.iloc[0] - test_dep.iloc[ranks[0]])*100)
         ret_rd.append(np.median(rd_collector))
     return ret_rd
 
@@ -153,16 +154,17 @@ def get_rd(family, detected_bws):
 def run_main(step_size, percentage, loss):
     bellwethers = {
         'sac': ['sac_4'],
-        'sqlite': ['sqlite_88'],
+        'sqlite': ['sqlite_17'],
         'spear': ['spear_7', 'spear_1', 'spear_9'],
         'x264': ['x264_9', 'x264_10', 'x264_7','x264_1', 'x264_11', 'x264_8','x264_18', 'x264_6'],
-        'storm-obj1': ['storm-obj1_feature6'],
-        'storm-obj2': ['storm-obj2_feature7']
+        'storm-obj1': ['storm-obj1_feature8'],
+        'storm-obj2': ['storm-obj2_feature9']
     }
 
     # seed(10)
     reps = 20
-    familys = ['storm-obj1', 'storm-obj2','x264','spear', 'sac',
+    familys = [
+        'sqlite', 'storm-obj1', 'storm-obj2','x264','spear', 'sac',
                ]
     data_folder = "../Data/"
     columns = {
@@ -195,6 +197,7 @@ def run_main(step_size, percentage, loss):
         for _ in xrange(reps):
             print ". ",
             ret = run(files, rows[family], step_size, percentage, loss)
+            # raw_input()
             ret_rd = get_rd(family, ret)
             collector[family].append([ret, ret_rd])
             # print ret
@@ -209,20 +212,22 @@ def run_main(step_size, percentage, loss):
     print '== ' * 20
 
     import pickle
-    pickle.dump(collector, open('./Pickle_Folder/experiment_pickle_' + str(step_size) + '_' + str(percentage)+ '_' + str(loss) + '.p', 'w'))
+    pickle.dump(collector, open('./experiment_pickle_' + str(step_size) + '_' + str(percentage)+ '_' + str(loss) + '.p', 'w'))
 
 if __name__ == '__main__':
-    step_sizes = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-    percentages = [0.05, 0.07, 0.09, 0.1, 0.13, 0.15, 0.18, 0.2]
-    losses = [3, 4, 5, 6, 7,]
-    import multiprocessing as mp
-    # Main control loop
-    pool = mp.Pool()
+    # step_sizes = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+    # percentages = [0.05, 0.07, 0.09, 0.1, 0.13, 0.15, 0.18, 0.2]
+    # losses = [3, 4, 5, 6, 7,]
+    # import multiprocessing as mp
+    # # Main control loop
+    # pool = mp.Pool()
+    #
+    # for step_size in step_sizes:
+    #     for percentage in percentages:
+    #         for loss in losses:
+    #             pool.apply_async(run_main, (step_size, percentage, loss))
+    #
+    # pool.close()
+    # pool.join()
 
-    for step_size in step_sizes:
-        for percentage in percentages:
-            for loss in losses:
-                pool.apply_async(run_main, (step_size, percentage, loss))
-
-    pool.close()
-    pool.join()
+    run_main(4, 0.1, 4)

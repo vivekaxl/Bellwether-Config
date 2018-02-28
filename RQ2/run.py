@@ -120,16 +120,16 @@ def run(source, targets, reps, measure, perc=0.4):
 
 if __name__ == "__main__":
     seed(10)
-    reps = 20
-    familys = [ 'sac',
-        'sqlite', 'spear', 'x264','storm-obj1', 'storm-obj2',
+    reps = 40
+    familys = [
+         'sac',#'sqlite', #'spear', 'x264','storm-obj1', 'storm-obj2','sac',
                 ]
     measures = ['rank']#, 'mmre', 'abs_res']
-    percs = [.05, .10, .15, .20, .25, .30, .35, .40]
+    percs = [ .15, .20, .05, .10, .25, .30, .35, .40]
     data_folder = "../Data/"
     bellwethers = {
         'sac': 'sac_4',
-        'sqlite': 'sqlite_73',
+        'sqlite': 'sqlite_17',
         'spear': 'spear_7',
         'x264': 'x264_9',
         'storm-obj1': 'storm-obj1_feature8',
