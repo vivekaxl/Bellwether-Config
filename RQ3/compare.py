@@ -4,9 +4,9 @@ import numpy as np
 import csv
 from pdb import set_trace
 from MiscUtils import Misc
-from Waterloo import waterloo
-from Pooyan import pooyan
 from sk import sk_ranks, rdivDemo
+from TransferLearners import Pooyan, Baseline, Waterloo
+
 
 pickle_file = "./Processed/processed.p"
 
@@ -14,8 +14,8 @@ content = pickle.load(open(pickle_file, 'r'))
 
 # 7, 8, 9, 10, ]#11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 # training_coeffs = [2, 4, 8, 16, 32, 64, 99]
-training_coeffs = [16]
-familys = ['sac', 'spear',  'x264', 'storm-obj1', 'storm-obj2', 'sqlite']
+training_coeffs = [100]
+familys = ['sac', 'x264'] #, 'sqlite', 'sac', 'spear',  'x264', 'sqlite']
 
 rows = {
     'sac': 845,
@@ -44,19 +44,24 @@ for family in familys:
             t = [source]
             for f in files:
                 if not f == source:
-                    t.extend(content[family][training_coeff][source][f])
+                    t.append(np.median(content[family][training_coeff][source][f]))
             tt.append(t)
         ranks = sk_ranks(tt)
 
+        "Sort ranks"
         ranks = sorted(ranks, key=lambda x: x.rank)
+        "Best rank"
         best_rank = Misc.uniques([x.rank for x in ranks])[0] 
+        "Worst rank"
         worst_rank = Misc.uniques([x.rank for x in ranks])[-1]
+        "Best dataset"
         best_dataset = [data.name for data in ranks if data.rank == best_rank]
+        "Worst dataset"
         worst_dataset = [data.name for data in ranks if data.rank == worst_rank]
-        the_remaining = [data.name for data in ranks]
+        "The remaining dataset"
+        the_remaining = [data.name for data in ranks]# if best_rank < data.rank < worst_rank]
         
-        set_trace()
-        
+
         "Compare the Transferring from the best/worst datasets on the rest"
         comp = []
         for best in best_dataset:
@@ -74,6 +79,5 @@ for family in familys:
             comp.append(comp_0)
 
         rdivDemo(comp)
-        set_trace()
         print ""
-    print ""
+    print 50*"===="

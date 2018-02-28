@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 from pdb import set_trace
-from metrics import rank_diff
+from metrics import rank_diff, mag_abs_error
 from DataUtil import get_all_projects
 from Model import train_prediction_model, train_transfer_model
 
@@ -55,13 +55,17 @@ def waterloo(source_conf, target_conf):
     target_predicted = transfer_model.predict(
         predicted_raw).reshape(1, -1)[0]
     
-    "Get rank difference"
-    r_diff = rank_diff(actual=target_actual, predicted=target_predicted)
-    return r_diff
     # "Get MMRE"
     # mmre = np.mean(abs(target_actual - target_predicted))
     # return mmre
+    
+    # "Get rank difference"
+    # r_diff = rank_diff(actual=target_actual, predicted=target_predicted)
+    # return r_diff
 
+    "Get Magnitude of Error"
+    me = mag_abs_error(actual=target_actual, predicted=target_predicted)
+    return me
 
 
 
