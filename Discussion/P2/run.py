@@ -20,20 +20,7 @@ def run(source, targets, reps, measure, percent):
         ctrain_indep = [c for c in train_cols if '<$' not in c]
         ctrain_dep = [c for c in train_cols if '<$' in c]
         assert (len(ctrain_dep) == 1), "Something is wrong"
-
-        # Get indexes to split to train and testing data
-        indexes = range(len(train_content))
-        random.shuffle(indexes)
-
-        # Get training and testing indexes to split into train and test
-        target_train_indexes = indexes[:int(len(train_content) * percent * 0.01)]
-
-        train_content = train_content.ix[target_train_indexes]
-
         ctrain_dep = ctrain_dep[0]
-        train_indep = train_content[ctrain_indep]
-        temp_train = train_content[ctrain_dep]
-        train_dep = (temp_train - temp_train.min())/(temp_train.max() - temp_train.min())
 
         source_name = source.replace('../../Data/', '').replace('.csv', '')
         target_name = target.replace('../../Data/', '').replace('.csv', '')
@@ -48,6 +35,19 @@ def run(source, targets, reps, measure, percent):
         data_family[source][target][percent] = []
         for _ in xrange(reps):
             print ". ",
+            # Get indexes to split to train and testing data
+            indexes = range(len(train_content))
+            random.shuffle(indexes)
+
+            # Get training and testing indexes to split into train and test
+            target_train_indexes = indexes[:int(len(train_content) * percent * 0.01)]
+
+            target_train_content = train_content.ix[target_train_indexes]
+
+            train_indep = target_train_content[ctrain_indep]
+            temp_train = target_train_content[ctrain_dep]
+            train_dep = (temp_train - temp_train.min()) / (temp_train.max() - temp_train.min())
+
             tree = DecisionTreeRegressor()
             tree.fit(train_indep, train_dep)
 
@@ -77,7 +77,7 @@ def run(source, targets, reps, measure, percent):
 
 
 if __name__ == "__main__":
-    seed(10)
+    # seed(10)
     reps = 30
     familys = [ 'sqlite', 'storm-obj1', 'storm-obj2', 'spear', 'sac',  'x264',
                 ]
@@ -107,8 +107,8 @@ if __name__ == "__main__":
                     targets = [f for f in files if source!=f]
                     print targets, data_folder + source
                     assert(len(targets) + 1 == len(files)), "Something is wrong"
-                    run(source, targets, reps, measure, percent)
-                    # pool.apply_async(run, (source, targets, reps, measure, percent))
+                    # run(source, targets, reps, measure, percent)
+                    pool.apply_async(run, (source, targets, reps, measure, percent))
                 print
     pool.close()
     pool.join()
