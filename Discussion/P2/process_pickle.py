@@ -27,5 +27,5 @@ for folder in folders:
             all_content[key1][key2] = {}
 
         all_content[key1][key2][key3] = content[key1][key2][key3]
-    pickle_file = './PickleLocker/' + folder[:-1] + ".p"
+    pickle_file = './PickleLocker/' + folder[:-1] + "_1-16.p"
     pickle.dump(all_content, open(pickle_file, 'w'))

@@ -92,7 +92,8 @@ if __name__ == "__main__":
     }
 
     measures = [ 'rank',]#'mmre', 'abs_res',
-    percents = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # percents = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    percents = range(1, 16)
     data_folder = "../../Data/"
     import multiprocessing as mp
     # Main control loop
