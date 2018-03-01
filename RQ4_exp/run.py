@@ -11,7 +11,7 @@ from random import seed
 import copy
 
 
-def run(files, no_rows, no_columns, percentage, loss):
+def run(files, no_rows, step_size, percentage, loss, start_perc):
     result_collector = {}
     contents = {}
     local_files = copy.copy(files)
@@ -38,10 +38,13 @@ def run(files, no_rows, no_columns, percentage, loss):
             assert(len(measurements[file]) + len(cleaned_indexes) == len(all_indexes)), "Something is wrong"
             random.shuffle(cleaned_indexes)
             # choose 1 training_coeff
-            selected_indexes = cleaned_indexes[:no_columns]
+            if gen == 1:
+                selected_indexes = cleaned_indexes[:int(start_perc * no_rows)]
+            else:
+                selected_indexes = cleaned_indexes[:step_size]
             # add to measuerements
             measurements[file].extend(selected_indexes)
-            assert(len(measurements[file]) == gen*no_columns), "Something is wrong"
+
 
         for file in local_files:
             result_collector[gen][file] = []
@@ -87,7 +90,7 @@ def run(files, no_rows, no_columns, percentage, loss):
         if gen > 3:
             # eliminate files which are not possible bellwether
             temp = result_collector[gen]
-            temp_split = [np.median(temp[key]) for key in temp.keys()]
+            temp_split = [np.mean(temp[key]) for key in temp.keys()]
             med = np.median(temp_split) + np.std(temp_split)
             temp_files = []
             for key, val in temp.iteritems():
@@ -100,12 +103,18 @@ def run(files, no_rows, no_columns, percentage, loss):
 
         if prev <= len(local_files):
             loosy -= 1
+        else:
+            loosy = loss
         prev = min(prev, len(local_files))
 
-        if len(measurements[local_files[0]]) > no_rows * percentage or loosy == 0:
+        if len(measurements[local_files[0]]) > no_rows * percentage or loosy == 0 or len(local_files)==1:
+            # print ">>>>>>> ", len(measurements[local_files[0]]), loosy, len(local_files)
             break
         gen += 1
-    return local_files
+    # print [local_file for local_file in local_files if np.median(result_collector[gen][local_file])==min(temp_split)][-1]
+    temp = result_collector[gen]
+    temp_split = [np.mean(temp[key]) for key in temp.keys()]
+    return [[local_file for local_file in local_files if np.mean(result_collector[gen][local_file])==min(temp_split)][-1]]
 
 def get_rd(family, detected_bws):
     data_folder = '../Data/'
@@ -113,22 +122,25 @@ def get_rd(family, detected_bws):
     files = [f for f in files if os.path.isfile(f)]
     ret_rd = []
     for detected_bw in detected_bws:
+        print detected_bw
         rd_collector = []
+
+        train_content = pd.read_csv(detected_bw)
+        train_cols = train_content.columns.values.tolist()
+        ctrain_indep = [c for c in train_cols if '<$' not in c]
+        ctrain_dep = [c for c in train_cols if '<$' in c]
+        assert (len(ctrain_dep) == 1), "Something is wrong"
+
+        ctrain_dep = ctrain_dep[0]
+        train_indep = train_content[ctrain_indep]
+        train_dep = train_content[ctrain_dep]
+
+        # Train a model using source data
+        source_model = DecisionTreeRegressor()
+        source_model.fit(train_indep, train_dep)
+
         for target in files:
             if detected_bw == target: continue
-            train_content = pd.read_csv(detected_bw)
-            train_cols = train_content.columns.values.tolist()
-            ctrain_indep = [c for c in train_cols if '<$' not in c]
-            ctrain_dep = [c for c in train_cols if '<$' in c]
-            assert (len(ctrain_dep) == 1), "Something is wrong"
-
-            ctrain_dep = ctrain_dep[0]
-            train_indep = train_content[ctrain_indep]
-            train_dep = train_content[ctrain_dep]
-
-            # Train a model using source data
-            source_model = DecisionTreeRegressor()
-            source_model.fit(train_indep, train_dep)
 
             # Read target data
             target_content = pd.read_csv(target)
@@ -138,6 +150,7 @@ def get_rd(family, detected_bws):
             assert (len(ctarget_dep) == 1), "Something is wrong"
             ctarget_dep = ctarget_dep[0]
 
+            target_content = target_content.sort(ctarget_dep)
             test_indep = target_content[ctarget_indep]
             test_dep = target_content[ctarget_dep]
             # Take care of duplicate performance values
@@ -151,7 +164,7 @@ def get_rd(family, detected_bws):
     return ret_rd
 
 
-def run_main(step_size, percentage, loss):
+def run_main(step_size, percentage, loss, start_perc):
     bellwethers = {
         'sac': ['sac_4'],
         'sqlite': ['sqlite_17'],
@@ -164,7 +177,7 @@ def run_main(step_size, percentage, loss):
     # seed(10)
     reps = 20
     familys = [
-        'sqlite', 'storm-obj1', 'storm-obj2','x264','spear', 'sac',
+        'x264', 'sqlite', 'storm-obj1', 'storm-obj2','spear', 'sac',
                ]
     data_folder = "../Data/"
     columns = {
@@ -194,13 +207,14 @@ def run_main(step_size, percentage, loss):
         files = [data_folder + file for file in os.listdir(data_folder) if family in file]
         files = [f for f in files if os.path.isfile(f)]
         count = 0
+        ret_rds = []
         for _ in xrange(reps):
             print ". ",
-            ret = run(files, rows[family], step_size, percentage, loss)
+            ret = run(files, rows[family], step_size, percentage, loss, start_perc)
             # raw_input()
             ret_rd = get_rd(family, ret)
             collector[family].append([ret, ret_rd])
-            # print ret
+            # print ret, ret_rd
             for bw in bellwethers[family]:
                 if '../Data/' + bw + '.csv' in ret:
                     count += 1
@@ -212,7 +226,7 @@ def run_main(step_size, percentage, loss):
     print '== ' * 20
 
     import pickle
-    pickle.dump(collector, open('./experiment_pickle_' + str(step_size) + '_' + str(percentage)+ '_' + str(loss) + '.p', 'w'))
+    pickle.dump(collector, open('./experiment_pickle_' + str(step_size) + '_' + str(percentage)+ '_' + str(loss) + '_' + str(start_perc) + '.p', 'w'))
 
 if __name__ == '__main__':
     # step_sizes = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
@@ -230,4 +244,4 @@ if __name__ == '__main__':
     # pool.close()
     # pool.join()
 
-    run_main(4, 0.1, 4)
+    run_main(15, 0.15, 4, 0.075)
