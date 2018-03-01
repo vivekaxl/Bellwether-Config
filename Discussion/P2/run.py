@@ -81,6 +81,16 @@ if __name__ == "__main__":
     reps = 30
     familys = [ 'sqlite', 'storm-obj1', 'storm-obj2', 'spear', 'sac',  'x264',
                 ]
+
+    bellwethers = {
+        'sac': ['sac_4'],
+        'sqlite': ['sqlite_17'],
+        'spear': ['spear_7', 'spear_1', 'spear_9'],
+        'x264': ['x264_9', 'x264_10', 'x264_7', 'x264_1', 'x264_11', 'x264_8', 'x264_18', 'x264_6'],
+        'storm-obj1': ['storm-obj1_feature8'],
+        'storm-obj2': ['storm-obj2_feature9']
+    }
+
     measures = [ 'rank',]#'mmre', 'abs_res',
     percents = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     data_folder = "../../Data/"
@@ -91,12 +101,14 @@ if __name__ == "__main__":
         files = [data_folder + file for file in os.listdir(data_folder) if family in file]
         for measure in measures:
             for percent in percents:
-                for file in files:
-                    source = file
-                    targets = [f for f in files if file!=f]
+                sources = bellwethers[family]
+                for source in sources:
+                    source = data_folder + source + '.csv'
+                    targets = [f for f in files if source!=f]
+                    print targets, data_folder + source
                     assert(len(targets) + 1 == len(files)), "Something is wrong"
-                    # run(source, targets, reps, measure, percent)
-                    pool.apply_async(run, (source, targets, reps, measure, percent))
+                    run(source, targets, reps, measure, percent)
+                    # pool.apply_async(run, (source, targets, reps, measure, percent))
                 print
     pool.close()
     pool.join()
