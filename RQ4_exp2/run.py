@@ -86,14 +86,26 @@ def run(files, no_rows, no_columns, percentage, loss):
 
         if gen > 3:
             # eliminate files which are not possible bellwether
-            temp = result_collector[gen]
-            temp_split = [np.median(temp[key]) for key in temp.keys()]
-            med = np.median(temp_split) + np.std(temp_split)
+            assert(len(result_collector[gen].keys()) == len(local_files)), "Something is wrong"
+            sk_list = [[key]+result_collector[gen][key] for key in result_collector[gen].keys()]
+
+            from sk import rdivDemo
+            results = rdivDemo(str(gen), sk_list, globalMinMax=False, isLatex=False)
+            filtered_results = [r for r in results if r[0]==0]
+            # print "Gen No: ", gen , '|',
             temp_files = []
-            for key, val in temp.iteritems():
-                if np.median(val) <= med:
-                    # print np.median(val), key
-                    temp_files.append(key)
+            for fr in filtered_results:
+                temp_files.append(fr[2].name)
+                # print fr[2].name, '|',
+            # print
+            # temp = result_collector[gen]
+            # temp_split = [np.median(temp[key]) for key in temp.keys()]
+            # med = np.median(temp_split) + np.std(temp_split)
+            # temp_files = []
+            # for key, val in temp.iteritems():
+            #     if np.median(val) <= med:
+            #         # print np.median(val), key
+            #         temp_files.append(key)
             local_files = copy.copy(temp_files)
 
             # print gen, len(local_files), loosy
@@ -102,9 +114,11 @@ def run(files, no_rows, no_columns, percentage, loss):
             loosy -= 1
         prev = min(prev, len(local_files))
 
-        if len(measurements[local_files[0]]) > no_rows * percentage or loosy == 0:
+        if len(local_files) == 1 or len(measurements[local_files[0]]) > no_rows * percentage: #len(measurements[local_files[0]]) > no_rows * percentage or loosy == 0:
             break
         gen += 1
+    # return [min(filtered_results, key=lambda x: x[1])[2].name]
+    print local_files
     return local_files
 
 def get_rd(family, detected_bws):
@@ -204,8 +218,9 @@ def run_main(step_size, percentage, loss):
             for bw in bellwethers[family]:
                 if '../Data/' + bw + '.csv' in ret:
                     count += 1
-                    print count, ' (' + str(len(ret)) + ')',
+                    print count,' (' + str(len(ret)) + ')',
                     break
+            # raw_input()
 
         print
         print family, count
@@ -230,4 +245,4 @@ if __name__ == '__main__':
     # pool.close()
     # pool.join()
 
-    run_main(4, 0.1, 4)
+    run_main(10, 0.5, 4)
