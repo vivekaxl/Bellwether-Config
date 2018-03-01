@@ -78,9 +78,19 @@ class SEAMS_Kernel(Kernel):
             hyperparameter of the kernel. Only returned when eval_gradient
             is True.
         """
-        # covar = np.cov(X)
-        # covar *= self.corr
-        return self._nearest_positive_definite(np.ones((X.shape[0], X.shape[0])))
+        if Y is None: Y = X
+        K = self.corr * np.ones((X.shape[0], Y.shape[0]))
+        if not self._is_positive_definite(K):
+            K = np.ones((X.shape[0], Y.shape[0]))
+            
+        if eval_gradient:
+            if not self.hyperparameter_constant_value.fixed:
+                return (K, self.constant_value
+                        * np.ones((X.shape[0], X.shape[0], 1)))
+            else:
+                return K, np.empty((X.shape[0], X.shape[0], 0))
+        else:
+            return K
 
         
     def diag(self, X):

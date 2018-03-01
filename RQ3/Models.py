@@ -60,9 +60,9 @@ class Model:
         src_indep_vars = src_config[src_config.columns[:-1]]
         src_depend_var = src_config[src_config.columns[-1]]
         tgt_depend_var = tgt_config[tgt_config.columns[-1]]
-        corr = np.correlate(src_depend_var, tgt_depend_var)
+        corr = np.mean(np.correlate(src_depend_var, tgt_depend_var))
         kernel = SEAMS_Kernel(corr) 
-        clf = GaussianProcessRegressor()
+        clf = GaussianProcessRegressor(kernel=kernel)
         return clf.fit(X=src_indep_vars, y=src_depend_var)
 
     @classmethod
@@ -80,5 +80,5 @@ class Model:
 
         src_indep_vars = src_config[src_config.columns[:-1]]
         src_depend_var = src_config[src_config.columns[-1]]
-        clf = RandomForestRegressor()
+        clf = DecisionTreeRegressor()
         return clf.fit(src_indep_vars, src_depend_var)

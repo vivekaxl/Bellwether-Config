@@ -1,28 +1,28 @@
 from __future__ import print_function
 import os
-import numpy as np
 import csv
+import numpy as np
 from pdb import set_trace
 from MiscUtils import Misc
+import multiprocessing as mp
 from sk import sk_ranks, rdivDemo
 from DataUtil import get_all_projects
 from TransferLearners import Pooyan, Baseline, Waterloo
 
-
 class ResearchQuestion4:
-    def get_reults(self, bellwethers=None, n_reps=10):
+    def get_reults(self, bellwethers=None, n_reps=30):
         data_path = os.path.realpath("./data")
         projects = get_all_projects(data_path)
         for project in projects:
             print(project.name.upper())
             files = project.files()
             results_0 = []
-            for transfer in [Baseline, Waterloo]: 
+            for transfer in [Pooyan, Baseline, Waterloo]: 
                 results_1 = [transfer.__doc__.upper()]
                 for source_name, source_conf in files.iteritems():
                     for target_name, target_conf in files.iteritems():
                             if not source_name == target_name:
-                                if transfer.__doc__ =="baseline": 
+                                if transfer.__doc__ == "baseline": 
                                     if source_name in bellwethers[project.name]:
                                         results_1.extend([transfer.learner(source_conf, target_conf)
                                     for _ in xrange(n_reps)])
@@ -31,6 +31,7 @@ class ResearchQuestion4:
                                                       for _ in xrange(n_reps)])
                 results_0.append(results_1)
             rdivDemo(results_0)
+            print("")
 
 if __name__ == "__main__":
     rq4 = ResearchQuestion4()
