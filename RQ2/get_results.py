@@ -6,7 +6,7 @@ from sk import rdivDemo
 
 pickle_folder = './Processed/'
 files = [pickle_folder+file for file in os.listdir(pickle_folder) if '.p' in file]
-result_folder = './Results/'
+result_folder = './Results_10-100/'
 consolidated = {}
 for file in files:
     print file

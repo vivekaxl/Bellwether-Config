@@ -68,9 +68,9 @@ def draw(heatmap_arr, xlabel, name):
     plt.savefig('./Figures/' + name + '.png', dpi=150)
 
 
-folder = './Results/'
+folder = './Results_10-100/'
 files = [folder+f for f in os.listdir(folder)]
-# files = ['./Results/storm-obj2.csv']
+# files = ['./Results_10-100/storm-obj2.csv']
 
 for file in files:
     name = file.split('/')[-1].replace('.csv', '')
