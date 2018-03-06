@@ -1,0 +1,1 @@
+hold out of 60%
