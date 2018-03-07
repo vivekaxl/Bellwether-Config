@@ -1,83 +1,46 @@
-import pickle
+from __future__ import print_function
 import os
-import numpy as np
 import csv
+import numpy as np
 from pdb import set_trace
 from MiscUtils import Misc
+import multiprocessing as mp
 from sk import sk_ranks, rdivDemo
+from DataUtil import get_all_projects
 from TransferLearners import Pooyan, Baseline, Waterloo
 
 
-pickle_file = "./Processed/processed.p"
+class BestWorst(object):
+    "Compare the difference between using the best and the worst datasets"
+    @classmethod
+    def compare(self, data_pairs):
+        data_path = os.path.realpath("./data")
+        projects = get_all_projects(data_path)
+        for project in projects:
+            print(project.name.upper())
+            files = project.files()
+            best, worst = data_pairs[project.name]
+            rest = [dframe for fname, dframe in files.iteritems() if fname not in data_pairs[project.name]]
+            best_results = ["best"]
+            worst_results = ["worst"]
+            for tgt in rest:
+                best_results.extend([Pooyan.learner(files[best], tgt) for _ in xrange(1)])
+                worst_results.extend([Pooyan.learner(files[worst], tgt) for _ in xrange(1)])
+            
+            rdivDemo([best_results, worst_results])
 
-content = pickle.load(open(pickle_file, 'r'))
-
-# 7, 8, 9, 10, ]#11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-# training_coeffs = [2, 4, 8, 16, 32, 64, 99]
-training_coeffs = [8]
-familys = ['sac', 'x264', 'sqlite', 'sac', 'spear',  'x264', 'sqlite']
-
-rows = {
-    'sac': 845,
-    'sqlite': 1000,
-    'spear': 16834,
-    'x264': 2047,
-    'storm-obj1': 536,
-    'storm-obj2': 536,
-}
+            set_trace()
 
 
-for family in familys:
-    myfile = open('./Results/' + family + '_1.csv', 'w')
-    writer = csv.writer(myfile)
-    files = sorted(content[family][2].keys())
-    heading = ['Source'] + \
-        map(str, [int(t * rows[family] * 0.01) for t in training_coeffs])
-    writer.writerow(heading)
-    print family
-    print len(family)* "-"
+if __name__ == "__main__":
+    best_worst = BestWorst()
+    best_worst.compare(data_pairs={
+        'sac': ('sac_6', 'sac_5'),
+        'spear': ('spear_7', 'spear_3'),
+        'x264': ('x264_18', 'x264_0'),
+        'sqlite': ('sqlite_17', 'sqlite_94'),
+        'storm-obj2': ('storm-obj2_feature7', 'storm-obj2_feature9')
+    })
+    
 
-    for training_coeff in training_coeffs:
-        tt = []
-        print "Sampled: {}%.".format(training_coeff)
-        for source in files:
-            t = [source]
-            for f in files:
-                if not f == source:
-                    t.append(np.median(content[family][training_coeff][source][f]))
-            tt.append(t)
-        ranks = sk_ranks(tt)
 
-        "Sort ranks"
-        ranks = sorted(ranks, key=lambda x: x.rank)
-        "Best rank"
-        best_rank = Misc.uniques([x.rank for x in ranks])[0] 
-        "Worst rank"
-        worst_rank = Misc.uniques([x.rank for x in ranks])[-1]
-        "Best dataset"
-        best_dataset = [data.name for data in ranks if data.rank == best_rank]
-        "Worst dataset"
-        worst_dataset = [data.name for data in ranks if data.rank == worst_rank]
-        "The remaining dataset"
-        the_remaining = [data.name for data in ranks]
-
-        "Compare the Transferring from the best/worst datasets on the rest"
-        comp = []
-        for best in best_dataset:
-            comp_0 = [os.path.basename(best).rstrip(".csv")]
-            for rest in the_remaining:
-                if not rest == best:
-                    comp_0.extend([Waterloo.learner(best, rest) for _ in xrange(30)])
-            comp.append(comp_0)
-
-        for worst in worst_dataset:
-            comp_0 = [os.path.basename(worst).rstrip(".csv")]
-            for rest in the_remaining:
-                if not rest == worst:
-                    comp_0.extend([Waterloo.learner(worst, rest) for _ in xrange(30)])
-                    
-            comp.append(comp_0)
-
-        rdivDemo(comp)
-        print ""
-    print 50*"===="
