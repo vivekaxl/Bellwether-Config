@@ -91,8 +91,8 @@ class Baseline:
         :rtype: Float
         """
 
-        source_conf = pd.read_csv(source_conf).reset_index() if isinstance(
-            source_conf, str) else source_conf.reset_index()
+        source_conf = pd.read_csv(source_conf).sample(frac=0.2).reset_index() if isinstance(
+            source_conf, str) else source_conf.sample(frac=0.2).reset_index()
 
         target_conf = pd.read_csv(target_conf).reset_index() if isinstance(
             target_conf, str) else target_conf.reset_index()
@@ -151,8 +151,8 @@ class Pooyan:
         :rtype: Float
         """
 
-        source_conf = pd.read_csv(source_conf).reset_index() if isinstance(
-            source_conf, str) else source_conf.reset_index()
+        source_conf = pd.read_csv(source_conf).sample(frac=0.2).reset_index() if isinstance(
+            source_conf, str) else source_conf.sample(frac=0.2).reset_index()
 
         target_conf = pd.read_csv(target_conf).reset_index() if isinstance(
             target_conf, str) else target_conf.reset_index()

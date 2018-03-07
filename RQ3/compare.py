@@ -14,8 +14,8 @@ content = pickle.load(open(pickle_file, 'r'))
 
 # 7, 8, 9, 10, ]#11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 # training_coeffs = [2, 4, 8, 16, 32, 64, 99]
-training_coeffs = [100]
-familys = ['sac', 'x264'] #, 'sqlite', 'sac', 'spear',  'x264', 'sqlite']
+training_coeffs = [8]
+familys = ['sac', 'x264', 'sqlite', 'sac', 'spear',  'x264', 'sqlite']
 
 rows = {
     'sac': 845,
@@ -59,8 +59,7 @@ for family in familys:
         "Worst dataset"
         worst_dataset = [data.name for data in ranks if data.rank == worst_rank]
         "The remaining dataset"
-        the_remaining = [data.name for data in ranks]# if best_rank < data.rank < worst_rank]
-        
+        the_remaining = [data.name for data in ranks]
 
         "Compare the Transferring from the best/worst datasets on the rest"
         comp = []
@@ -68,14 +67,15 @@ for family in familys:
             comp_0 = [os.path.basename(best).rstrip(".csv")]
             for rest in the_remaining:
                 if not rest == best:
-                    comp_0.extend([waterloo(best, rest) for _ in xrange(30)])
+                    comp_0.extend([Waterloo.learner(best, rest) for _ in xrange(30)])
             comp.append(comp_0)
 
         for worst in worst_dataset:
             comp_0 = [os.path.basename(worst).rstrip(".csv")]
             for rest in the_remaining:
                 if not rest == worst:
-                    comp_0.extend([waterloo(worst, rest) for _ in xrange(30)])
+                    comp_0.extend([Waterloo.learner(worst, rest) for _ in xrange(30)])
+                    
             comp.append(comp_0)
 
         rdivDemo(comp)
