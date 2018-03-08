@@ -28,6 +28,7 @@ def run(files, no_rows, step_size, percentage, loss, start_perc):
     loosy=loss
     gen = 1
     while True:
+        print ''
         # print sorted(local_files)
         result_collector[gen] = {}
         for file in local_files:
@@ -114,6 +115,7 @@ def run(files, no_rows, step_size, percentage, loss, start_perc):
     # print [local_file for local_file in local_files if np.median(result_collector[gen][local_file])==min(temp_split)][-1]
     temp = result_collector[gen]
     temp_split = [np.mean(temp[key]) for key in temp.keys()]
+    print sum([len(measurements[key]) for key in measurements.keys()])
     return [[local_file for local_file in local_files if np.mean(result_collector[gen][local_file])==min(temp_split)][-1]]
 
 def get_rd(family, detected_bws):
@@ -175,9 +177,9 @@ def run_main(step_size, percentage, loss, start_perc):
     }
 
     # seed(10)
-    reps = 20
+    reps = 30
     familys = [
-        'x264', 'sqlite', 'storm-obj1', 'storm-obj2','spear', 'sac',
+        'spear','sqlite', 'storm-obj1', 'storm-obj2','spear', 'sac', 'x264',
                ]
     data_folder = "../Data/"
     columns = {
@@ -226,11 +228,11 @@ def run_main(step_size, percentage, loss, start_perc):
     print '== ' * 20
 
     import pickle
-    pickle.dump(collector, open('./experiment_pickle_' + str(step_size) + '_' + str(percentage)+ '_' + str(loss) + '_' + str(start_perc) + '.p', 'w'))
+    pickle.dump(collector, open('experiment_pickle_' + str(step_size) + '_' + str(percentage)+ '_' + str(loss) + '_' + str(start_perc) + '.p', 'w'))
 
 if __name__ == '__main__':
-    # step_sizes = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-    # percentages = [0.05, 0.07, 0.09, 0.1, 0.13, 0.15, 0.18, 0.2]
+    # step_sizes = [ 4,  8,  12,  16,  20]
+    # percentages =  [0.09, 0.1, 0.13, 0.15, 0.18, 0.2]
     # losses = [3, 4, 5, 6, 7,]
     # import multiprocessing as mp
     # # Main control loop
@@ -239,9 +241,9 @@ if __name__ == '__main__':
     # for step_size in step_sizes:
     #     for percentage in percentages:
     #         for loss in losses:
-    #             pool.apply_async(run_main, (step_size, percentage, loss))
+    #             pool.apply_async(run_main, (step_size, percentage, loss, 0.075))
     #
     # pool.close()
     # pool.join()
 
-    run_main(15, 0.15, 4, 0.075)
+    run_main(12, 0.1, 5, 0.075)

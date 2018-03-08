@@ -49,11 +49,11 @@ def draw(pickle_file, measure):
         ax.add_patch(mpl.patches.Rectangle((i - .5, i - .5), 1, 1, hatch='+/', fill=False, snap=False, color='red', linewidth=8))
 
     for (i, j), z in np.ndenumerate(heatmap_arr):
-        if z == 4000:
+        if z == 1000000:
             # ax.text(j, i, 'X', ha='center', va='center', color='black')
             pass
         else:
-            ax.text(j, i, round(z, 3), ha='center', va='center', color='black', fontsize=28)
+            ax.text(j, i, round(z, 2), ha='center', va='center', color='black', fontsize=28)
 
     cb = plt.colorbar(imgplot, shrink=0.7)
     cb.ax.set_yticklabels(cb.ax.get_yticklabels(), fontsize=44)

@@ -46,7 +46,7 @@ for file in files:
     x = []
     y = []
     markers = ["*", "x", "s", "+", ".", "o", "v", "^", 'p']
-    keys = ['bw', '5','10', '15', '20', '25', '30', '35', '40']
+    keys = ['bw', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', ]
 
     import matplotlib.pyplot as plt
     name = file.split('/')[-1].replace('.p', '')
@@ -54,7 +54,7 @@ for file in files:
     for key in keys:
         x.append(consolidated[file][key][0])
         y.append(consolidated[file][key][1])
-    keys = ['Ex', '5', '10', '15', '20', '25', '30', '35', '40']
+    keys = ['Ex', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', ]
 
     # for xx, yy, marker in zip(x[1:], y[1:], markers[1:]):
     plt.plot(x[1:], y[1:], 'v--', markersize=12)

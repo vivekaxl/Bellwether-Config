@@ -6,7 +6,7 @@ import csv
 pickle_folder = './Processed/'
 measures = ['rank',]# 'mmre', 'abs_res']
 files = [pickle_folder+file for file in os.listdir(pickle_folder) if '.p' in file]
-result_folder = './Results/'
+result_folder = './Results_10-100/'
 for file in files:
     system_name = file.split('/')[-1].split('.p')[0]
     for measure in measures:

@@ -1,7 +1,7 @@
 from sk import rdivDemo
 import os
 
-folder = "./Results/"
+folder = "./Results_10-100/"
 results = [folder+f for f in os.listdir(folder) if '.csv' in f]
 
 for result in results:

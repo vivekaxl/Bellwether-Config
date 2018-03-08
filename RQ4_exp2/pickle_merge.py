@@ -4,7 +4,7 @@ import numpy as np
 import csv
 
 pickle_folder = "./Pickle_Folder/"
-myfile = open('./Results/overall_normalized.csv', 'w')
+myfile = open('./Results_10-100/overall_normalized.csv', 'w')
 writer = csv.writer(myfile)
 
 ret = {}

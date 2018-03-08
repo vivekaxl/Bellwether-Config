@@ -41,12 +41,12 @@ for file in files:
     for key in temp.keys():
         consolidated[file][key] = [np.median(temp[key]), sum([int(key)*0.01*measurements[target] for target in targets])]
         print file, key, np.median(temp[key]), sum([int(key)*0.01*measurements[target] for target in targets]), np.median(bw), measurements[targets[0]]
-        consolidated[file]['bw'] = [np.median(bw), measurements[targets[0]]]
+        consolidated[file]['bw'] = [np.median(bw), measurements[targets[0]]*0.1]
 
     x = []
     y = []
     markers = ["*", "x", "s", "+", ".", "o", "v", "^", 'p']
-    keys = ['bw', '5','10', '15', '20', '25', '30', '35', '40']
+    keys = ['bw', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', ]
 
     import matplotlib.pyplot as plt
     name = file.split('/')[-1].replace('.p', '')
@@ -54,17 +54,19 @@ for file in files:
     for key in keys:
         x.append(consolidated[file][key][0])
         y.append(consolidated[file][key][1])
-    keys = ['Ex', '5', '10', '15', '20', '25', '30', '35', '40']
+    keys = ['Ex', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', ]
 
     # for xx, yy, marker in zip(x[1:], y[1:], markers[1:]):
-    plt.plot(x[1:], y[1:], 'v--', markersize=12)
-    plt.scatter(x[0], y[0], marker=markers[0], s=104, color='red')
-    plt.xlabel('NAR (%)', fontsize=12)
-    plt.ylabel('Number of Measurements', fontsize=12)
+    plt.plot( y[1:],x[1:], 'v--', markersize=10, color='#F2D2D5', label='Source Model')
+    plt.scatter( y[0], x[0], marker=markers[0], s=104, color='#F27781', label='Local Model')
+    plt.ylabel('NAR (%)', fontsize=12)
+    plt.xlabel('Number of Measurements', fontsize=12)
+    # plt.xscale('log')
+    # plt.ylim(0, 11000)
     plt.annotate(keys[0], xy=(x[0] * 1.03, y[0]))
     for label, xx, yy in zip(keys[1:], x[1:], y[1:]):
         print label, xx, yy
-        plt.annotate(label, xy=(xx*1.05, yy))
+        plt.annotate(label, xy=(yy, xx*1.05))
     plt.savefig("./Pareto/"+name)
     plt.cla()
 

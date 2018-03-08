@@ -87,7 +87,7 @@ def run(source, targets, reps, measure):
 if __name__ == "__main__":
     seed(10)
     reps = 3
-    familys = [ 'sqlite', #'storm-obj1', 'storm-obj2', 'spear', 'sac',  'x264',
+    familys = [ 'sac', #'sqlite', #'storm-obj1', 'storm-obj2', 'spear', 'sac',  'x264',
                 ]
     measures = [ 'rank',]#'mmre', 'abs_res',
     data_folder = "../Data/"

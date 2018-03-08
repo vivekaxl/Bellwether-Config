@@ -3,8 +3,8 @@ import pickle
 import numpy as np
 import csv
 
-pickle_folder = "./Pickle_Folder/"
-myfile = open('./Results/overall_normalized.csv', 'w')
+pickle_folder = "./PickleFolder/"
+myfile = open('./Results_new/overall_normalized.csv', 'w')
 writer = csv.writer(myfile)
 
 ret = {}

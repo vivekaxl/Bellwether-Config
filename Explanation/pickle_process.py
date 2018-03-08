@@ -8,7 +8,7 @@ content = pickle.load(open(pickle_file))
 familys = content.keys()
 
 for family in familys:
-    myfile = open('./Results/' + family + '.csv', 'w')
+    myfile = open('./Results_10-100/' + family + '.csv', 'w')
     writer = csv.writer(myfile)
 
     files = sorted(content[family].keys())

@@ -12,11 +12,11 @@ familys = ['sac', 'sqlite',  'x264', 'spear']
 training_coeffs = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 for family in familys:
-    myfile = open('./Results/' + family + '.csv', 'w')
+    myfile = open('./Results_10-100/' + family + '.csv', 'w')
     writer = csv.writer(myfile)
     for training_coeff in training_coeffs:
         files = sorted(content[family][training_coeff].keys())
-        # myfile = open('./Results/' + family + '_' + str(training_coeff) + '.csv', 'w')
+        # myfile = open('./Results_10-100/' + family + '_' + str(training_coeff) + '.csv', 'w')
         # writer = csv.writer(myfile)
         heading = ['Source'] + files
         writer.writerow(heading)

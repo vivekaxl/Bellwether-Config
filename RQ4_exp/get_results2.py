@@ -12,7 +12,7 @@ familys = ['sac', 'sqlite',  'x264', 'spear']
 training_coeffs = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 for family in familys:
-    myfile = open('./Results/' + family + '_form2.csv', 'w')
+    myfile = open('./Results_10-100/' + family + '_form2.csv', 'w')
     writer = csv.writer(myfile)
     files = sorted(content[family][1].keys())
     for source in files:

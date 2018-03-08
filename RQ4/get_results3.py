@@ -21,7 +21,7 @@ rows = {
     }
 
 for family in familys:
-    myfile = open('./Results/' + family + '_1.csv', 'w')
+    myfile = open('./Results_10-100/' + family + '_1.csv', 'w')
     writer = csv.writer(myfile)
     files = sorted(content[family][2].keys())
     heading = ['Source'] + map(str, [int(t*rows[family]*0.01) for t in training_coeffs])

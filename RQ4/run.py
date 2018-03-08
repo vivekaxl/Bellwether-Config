@@ -63,7 +63,8 @@ def run(files, no_rows, no_columns):
             l_ranks = np.searchsorted(np.sort(target_dep), target_dep).tolist()
 
             ranks = [i[0] for i in sorted(enumerate(target_predict), key=lambda x: x[1])]
-            return_dict[file][target] = [l_ranks[ranks[0]]]
+            return_dict[file][target] = [abs(target_dep.iloc[0] - target_dep.iloc[ranks[0]])*100]
+            # print round(return_dict[file][target][-1], 3)
 
 
 
@@ -78,10 +79,10 @@ def run(files, no_rows, no_columns):
 if __name__ == "__main__":
     seed(10)
     reps = 20
-    familys = [ 'sqlite'#'spear', 'sac',  'x264', 'storm-obj1', 'storm-obj2', 'sqlite',
+    familys = [ 'sqlite', 'spear', 'sac',  'x264', 'storm-obj1', 'storm-obj2',
                ]
-    data_folder = "../alldata/"
-    training_percents = [2, 4, 8, 16, 32, 64, 99]#11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    data_folder = "../Data/"
+    training_percents = range(1, 101)#11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     columns = {
         'sac': 57,
         'sqlite': 14,
@@ -110,7 +111,7 @@ if __name__ == "__main__":
         for training_percent in training_percents:
             print training_percent,
             collector[family][training_percent] = None
-            for _ in xrange(reps):
+            for rep in xrange(reps):
                 print ' . ',
                 temp_returns = run(files, int(training_percent*rows[family]/100), columns[family])
                 if collector[family][training_percent] is None:
@@ -127,7 +128,7 @@ if __name__ == "__main__":
 
 
     import pickle
-    pickle.dump(collector, open('./Processed/processed_sqlite.p', 'w'))
+    pickle.dump(collector, open('./Processed/processed_100.p', 'w'))
 
 print "Done!"
 

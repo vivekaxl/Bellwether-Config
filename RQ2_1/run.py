@@ -126,7 +126,7 @@ if __name__ == "__main__":
     seed(10)
     reps = 20
     familys = [
-         'sqlite',# 'spear', 'x264','storm-obj1', 'storm-obj2',
+         'sqlite', 'spear', 'x264','storm-obj1', 'storm-obj2',
                 ]
     measures = ['rank']#, 'mmre', 'abs_res']
     percs = [ .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0]
@@ -151,7 +151,7 @@ if __name__ == "__main__":
                     print source
                     print targets
                     assert(len(targets) + 1 == len(files)), "Something is wrong"
-                    run(source, targets, reps, measure, perc)
-                    # pool.apply_async(run, (source, targets, reps, measure, perc))
+                    # run(source, targets, reps, measure, perc)
+                    pool.apply_async(run, (source, targets, reps, measure, perc))
     pool.close()
     pool.join()
