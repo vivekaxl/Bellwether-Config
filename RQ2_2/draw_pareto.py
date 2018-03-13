@@ -2,6 +2,8 @@ import pickle
 import os
 import numpy as np
 import pandas as pd
+from pylab import rcParams
+rcParams['figure.figsize'] =  10,5
 
 def find_no_of_configuration(filename):
     return pd.read_csv(filename).shape[0]
@@ -54,19 +56,22 @@ for file in files:
     for key in keys:
         x.append(consolidated[file][key][0])
         y.append(consolidated[file][key][1])
-    keys = ['Ex', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100', ]
+    keys = ['Ex', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', ]
 
     # for xx, yy, marker in zip(x[1:], y[1:], markers[1:]):
-    plt.plot( y[1:],x[1:], 'v--', markersize=10, color='#F2D2D5', label='Source Model')
-    plt.scatter( y[0], x[0], marker=markers[0], s=104, color='#F27781', label='Local Model')
-    plt.ylabel('NAR (%)', fontsize=12)
-    plt.xlabel('Number of Measurements', fontsize=12)
+    plt.plot( y[1:],x[1:], 'v--', markersize=10, color='gray', label='Non-tranfer Learning')
+    plt.scatter( y[0], x[0], marker='o', s=344, color='#F27781', label='BEETLE')
+    plt.ylabel('NAR (%)', fontsize=16)
+    plt.xlabel('Number of Measurements', fontsize=16)
     # plt.xscale('log')
     # plt.ylim(0, 11000)
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.10), ncol=2, fancybox=True, frameon=False)
+    print keys[0], x[0] * 1.03, y[0]
     plt.annotate(keys[0], xy=(x[0] * 1.03, y[0]))
     for label, xx, yy in zip(keys[1:], x[1:], y[1:]):
         print label, xx, yy
-        plt.annotate(label, xy=(yy, xx*1.05))
+        plt.annotate(label, xy=(yy*1.03, xx*1.05), fontsize=12)
+    plt.tight_layout()
     plt.savefig("./Pareto/"+name)
     plt.cla()
 
